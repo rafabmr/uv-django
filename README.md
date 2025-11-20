@@ -1,6 +1,6 @@
 # Proyecto Django con UV
 
-Proyecto Django configurado con UV como gestor de paquetes y entornos virtuales.
+Proyecto Django configurado con UV como gestor de paquetes.
 
 ## Requisitos
 
@@ -32,23 +32,47 @@ project/
 │   ├── settings.py
 │   ├── urls.py
 │   └── wsgi.py
-├── db.sqlite3
+├── .env
+├── database.db
 ├── manage.py
+```
+
+## Entorno virtual
+
+Crea un entorno virtual con uv:
+
+```bash
+uv venv --python 3.12.0
+source .venv/bin/activate
 ```
 
 ## Variables de entorno
 
-Crea un archivo `.env` en la raíz:
+Crea un archivo `.env` en la carpeta project:
 
 ```
 DEBUG=True
 SECRET_KEY=tu-secret-key-aqui
-DATABASE_URL=sqlite:///db.sqlite3
+DATABASE_URL=database.db
+```
+
+## Migraciones
+
+Genera las migraciones:
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+Crea un superusuario para el panel de administración:
+
+```bash
+python manage.py createsuperuser
 ```
 
 ## Despliegue
 
 ```bash
-uv pip install gunicorn
-uv run gunicorn config.wsgi:application
+uv run gunicorn --bind 127.0.0.1:8000 project.wsgi
 ```
